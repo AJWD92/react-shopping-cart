@@ -11,8 +11,17 @@ import Navigation from './components/Navigation';
 import Products from './components/Products';
 import ShoppingCart from './components/ShoppingCart';
 
+// font awesome SVG icons
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faTrash);
+
 function App() {
+	// setting state name products to initital value of data from data.js which acts as a mock server
 	const [products] = useState(data);
+
+	// setting state name cart, setCart to initial value of an empty array
 	const [cart, setCart] = useState([]);
 
 	const addItem = item => {
@@ -20,10 +29,16 @@ function App() {
 		setCart([...cart, item])
 	};
 
+	const removeItem = itemId => {
+		setCart(cart.filter(item => {
+			return item.id !== itemId;
+		}))
+	}
+
 	return (
 		<div className="App">
 			<ProductContext.Provider value={{products, addItem}}>
-			<CartContext.Provider value={cart}>
+			<CartContext.Provider value={{cart, removeItem}}>
 			<Navigation cart={cart} />
 
 			{/* Routes */}
